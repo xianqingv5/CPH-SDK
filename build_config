@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# get go path
+source /etc/profile
+
+OUTPUT=$1
+PWD=$(pwd)
+
+if test -z "${OUTPUT}"; then
+    echo "Usage: $0 <output_file>"
+    exit 1
+fi
+
+rm -f ${OUTPUT}
+touch ${OUTPUT}
+
+if [ ! -d "bin" ]; then
+    $(mkdir bin)
+fi
+
+if [ ! -d "gob" ]; then
+    $(mkdir gob)
+fi
+
+echo "export PATH=${PATH}:${GOPATH}/bin" >> ${OUTPUT}
+echo "export GOPATH=${GOPATH}:${PWD}" >> ${OUTPUT}

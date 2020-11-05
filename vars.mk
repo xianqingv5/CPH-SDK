@@ -1,0 +1,2 @@
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Users/qingfeng/gopath/bin:/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/bin:/Users/qingfeng/gradle-5.6.4/bin:/Users/qingfeng/apache-maven-3.6.3/bin:/usr/local/mysql/bin:/usr/local/mysql/support-files:/Users/qingfeng/.rvm/bin:/usr/local/Cellar/python/3.7.7/bin:/Users/qingfeng/gopath/bin
+export GOPATH=/Users/qingfeng/gopath:/Users/qingfeng/gopath/src/CPH-SDK
