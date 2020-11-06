@@ -8,7 +8,7 @@ import (
 	"authtoken"
 )
 
-func ListCloudPhoneServers(r *http.Request, w http.ResponseWriter) {
+func ListCloudPhoneServers(w http.ResponseWriter, r *http.Request) {
 	f := func(offerset *int, limit int, server_name, server_id string) string {
 		var page int
 		if offerset == nil {
