@@ -24,7 +24,7 @@ func Authtoken() string {
 							"name": "hw80449877"
 						},
 						"name": "hw80449877",
-						"password": "XXXXXXXXX"
+						"password": "HW510575613zz"
 					}
 				}
 			},
