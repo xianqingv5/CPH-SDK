@@ -1,11 +1,13 @@
 package task
 
 import (
-	"authtoken"
+	// "authtoken"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	// "io/ioutil"
 	"net/http"
+	"httphelper"
+	"global"
 )
 
 // 数据返回格式
@@ -38,13 +40,14 @@ func ListJobs (w http.ResponseWriter, r *http.Request) string {
 		re, _ := json.Marshal(res)
 		w.Write(re)
 	}
-	uri := fmt.Sprintf("https://cph.cn-east-3.myhuaweicloud.com/v1/%s/cloud-phone/phones?request_id=%s", projectId, requestId)
-	client := &http.Client{}
-	req, _ := http.NewRequest("GET", uri, nil)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("X-Auth-Token", authtoken.Authtoken())
-	resp, _ := client.Do(req)
-	body, _ := ioutil.ReadAll(resp.Body)
+	uri := fmt.Sprintf("%s/%s/cloud-phone/phones?request_id=%s", global.BaseUrl, projectId, requestId)
+	//client := &http.Client{}
+	//req, _ := http.NewRequest("GET", uri, nil)
+	//req.Header.Add("Content-Type", "application/json")
+	//req.Header.Add("X-Auth-Token", authtoken.Authtoken())
+	//resp, _ := client.Do(req)
+	//body, _ := ioutil.ReadAll(resp.Body)
+	body, _ := httphelper.HttpGet(uri)
 	res.data = string(body)
 	res.status = OK
 	re, _ := json.Marshal(res)
