@@ -2,48 +2,29 @@ package cphservers
 
 import (
 	"fmt"
-	"io/ioutil"
+	"httphelper"
 	"net/http"
-
-	"authtoken"
 )
 
 func ListCloudPhoneServers(w http.ResponseWriter, r *http.Request) {
-	f := func(offerset *int, limit int, server_name, server_id string) string {
-		var page int
-		if offerset == nil {
-			page = 0
-		} else {
-			page = *offerset
-		}
+	f := func(offset, limit, server_name, server_id string) ([]byte, error) {
 
-		uri := fmt.Sprintf("https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/phones?offset=%d&limit=%d&server_name=%s&server_id=%s", page, limit, server_name, server_id)
+		uri := fmt.Sprintf("https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/phones?offset=%s&limit=%s&server_name=%s&server_id=%s", offset, limit, server_name, server_id)
 
-		client := &http.Client{}
-		req, _ := http.NewRequest("GET", uri, nil)
-		req.Header.Add("Content-Type", "application/json")
-		req.Header.Add("X-Auth-Token", authtoken.Authtoken())
-		resp, _ := client.Do(req)
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, err := httphelper.HttpGet(uri)
 		fmt.Println("test ListCloudPhoneServers: ", string(body))
-		return string(body)
+		return body, err
 	}
 
-	if len(r.Form.Get("server_name")) > 0 {
-		f(nil,0, r.Form.Get("server_name"), "")
-	}
-	if len(r.Form.Get("server_id")) > 0 {
-		f(nil,0, "", r.Form.Get("server_id"))
+	serverName := r.Form.Get("server_name")
+	serverID := r.Form.Get("server_id")
+	offset := r.Form.Get("offset")
+	limit := r.Form.Get("limit")
+
+	body, err := f(offset, limit, serverName, serverID)
+	if err != nil {
+		return
 	}
 
-	page := 1
-	limit := 100
-	for i := 0; i < page; i++ {
-		body := f(&page, limit, "", "")
-		page++
-		if len(body) == 0 {
-			break
-		}
-	}
-
+	WriteTo(w, body)
 }
