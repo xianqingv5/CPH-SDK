@@ -40,7 +40,12 @@ func WriteTo(w http.ResponseWriter, data []byte) {
 	w.Write(data)
 }
 
+// todo test
 func CreateCloudPhoneServer(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		return
+	}
+
 	var cp CloudPhone
 	if err := json.NewDecoder(r.Body).Decode(&cp); err != nil {
 		return

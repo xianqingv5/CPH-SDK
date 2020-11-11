@@ -12,6 +12,7 @@ type psfBody struct {
 	ServerIDs  []string `json:"server_ids"`
 }
 
+// todo test
 func PushShareFiles(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		return

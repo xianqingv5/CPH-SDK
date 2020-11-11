@@ -8,13 +8,18 @@ import (
 )
 
 type postBody struct {
-	FilePaths string `json:"file_paths"`
+	FilePaths string   `json:"file_paths"`
 	ServerIds []string `json:"server_ids"`
 }
 
-func DeleteShareFiles(w http.ResponseWriter, r *http.Request)  {
+// todo test
+func DeleteShareFiles(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		return
+	}
+
 	var pb postBody
-	if err := json.NewDecoder(r.Body).Decode(&pb); err != nil{
+	if err := json.NewDecoder(r.Body).Decode(&pb); err != nil {
 		return
 	}
 

@@ -1,42 +1,23 @@
 package bandwidth
 
 import (
-	"encoding/json"
 	"fmt"
 	"httphelper"
 	"net/http"
-	"strconv"
 )
 
 func WriteTo(w http.ResponseWriter, data []byte) {
 	w.Write(data)
 }
 
-type bws struct {
-	BandWidthSize int `json:"band_width_size"`
-}
-
 func QueryBandwidth(w http.ResponseWriter, r *http.Request) {
-	bwID := r.Form.Get("band_width_id")
-	if len(bwID) == 0 {
-		return
-	}
+	uri := "https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/bandwidths"
 
-	bwSize := r.Form.Get("band_width_size")
-	if len(bwSize) == 0 {
-		return
-	}
-	info, _ := strconv.Atoi(bwSize)
-	data := bws{BandWidthSize: info}
-	mydata, _ := json.Marshal(data)
-
-	uri := "https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/bandwidths/" + bwID
-
-	body, err := httphelper.HttpPut(uri, mydata)
+	body, err := httphelper.HttpGet(uri)
 	if err != nil {
 		return
 	}
-	fmt.Println("test QueryBandwidth: ", string(body))
+	fmt.Println("test UpdateBandwidth: ", string(body))
 
 	WriteTo(w, body)
 }

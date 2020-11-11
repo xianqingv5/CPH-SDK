@@ -2,7 +2,6 @@ package authtoken
 
 import (
 	"bytes"
-
 	// "io/ioutil"
 	"net/http"
 )
@@ -23,8 +22,8 @@ func Authtoken() string {
 						"domain": {
 							"name": "hw80449877"
 						},
-						"name": "hw80449877",
-						"password": "HW510575613zz"
+						"name": "jackie_hu",
+						"password": "hu2130102"
 					}
 				}
 			},

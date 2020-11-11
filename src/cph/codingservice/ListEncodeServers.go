@@ -12,7 +12,7 @@ func WriteTo(w http.ResponseWriter, data []byte) {
 
 func ListEncodeService(w http.ResponseWriter, r *http.Request) {
 	f := func(offset, limit, types, status, server_id string) ([]byte, error) {
-		uri := fmt.Sprintf("https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/encode-servers?offset=%s&limit=%s&type=%s&status=%s&server_id=%s", offset, limit, types, status, server_id)
+		uri := fmt.Sprintf("https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/encode-servers")
 
 		body, err := httphelper.HttpGet(uri)
 		if err != nil {
