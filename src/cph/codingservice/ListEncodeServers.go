@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"httphelper"
 	"net/http"
+	"net/url"
+
+	"util"
 )
 
 func WriteTo(w http.ResponseWriter, data []byte) {
@@ -12,7 +15,15 @@ func WriteTo(w http.ResponseWriter, data []byte) {
 
 func ListEncodeService(w http.ResponseWriter, r *http.Request) {
 	f := func(offset, limit, types, status, server_id string) ([]byte, error) {
-		uri := fmt.Sprintf("https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/encode-servers")
+		v := url.Values{}
+		util.AddurlParam("offset", offset, &v)
+		util.AddurlParam("limit", limit, &v)
+		util.AddurlParam("type", types, &v)
+		util.AddurlParam("status", status, &v)
+		util.AddurlParam("server_id", server_id, &v)
+
+		uri := "https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/encode-servers"
+		uri = uri + "?" + v.Encode()
 
 		body, err := httphelper.HttpGet(uri)
 		if err != nil {
@@ -22,13 +33,9 @@ func ListEncodeService(w http.ResponseWriter, r *http.Request) {
 		return body, nil
 	}
 
-	var limit string
+	r.ParseForm()
 	offset := r.Form.Get("offset")
-	if len(r.Form.Get("limit")) == 0 {
-		limit = "100"
-	} else {
-		limit = r.Form.Get("limit")
-	}
+	limit := r.Form.Get("limit")
 	types := r.Form.Get("type")
 	status := r.Form.Get("status")
 	serverID := r.Form.Get("server_id")

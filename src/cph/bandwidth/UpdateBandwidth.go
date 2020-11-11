@@ -3,9 +3,10 @@ package bandwidth
 import (
 	"encoding/json"
 	"fmt"
-	"httphelper"
 	"net/http"
 	"strconv"
+
+	"httphelper"
 )
 
 type bws struct {
@@ -13,6 +14,7 @@ type bws struct {
 }
 
 func UpdateBandwidth(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
 	bwID := r.Form.Get("band_width_id")
 	if len(bwID) == 0 {
 		return

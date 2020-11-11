@@ -1,17 +1,13 @@
 package adb
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"httphelper"
 	"net/http"
-	"strings"
-
-	"authtoken"
 )
 
-type PostBody struct {
+type AdbPostBody struct {
 	Command   string   `json:"command"`
 	Content   string   `json:"content"`
 	ServerIds []string `json:"server_ids,omitempty"`
@@ -22,23 +18,21 @@ func WriteTo(w http.ResponseWriter, data []byte) {
 	w.Write(data)
 }
 
-func GetPostBody(r *http.Request, format string) *PostBody {
-	sids := r.Form.Get("server_ids")
-	s := strings.Split(sids, ",")
-	pids := r.Form.Get("phone_ids")
-	p := strings.Split(pids, ",")
-	content := r.Form.Get("content")
+func GetPostBody(r *http.Request, format string) *AdbPostBody {
+	var adb AdbPostBody
 
-	if (len(sids) == 0 && len(pids) == 0) || len(content) == 0 {
+	err := json.NewDecoder(r.Body).Decode(&adb)
+	if err != nil {
 		return nil
 	}
 
-	return &PostBody{
-		Command:   format,
-		Content:   content,
-		ServerIds: s,
-		PhoneIds:  p,
+	if (len(adb.ServerIds) == 0 && len(adb.PhoneIds) == 0) || len(adb.Content) == 0 {
+		return nil
 	}
+
+	adb.Command = format
+
+	return &adb
 }
 
 func InstallApk(w http.ResponseWriter, r *http.Request) {
@@ -49,14 +43,11 @@ func InstallApk(w http.ResponseWriter, r *http.Request) {
 	}
 
 	d, _ := json.Marshal(postbody)
-	data := bytes.NewReader(d)
 
-	client := &http.Client{}
-	req, _ := http.NewRequest("POST", uri, data)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("X-Auth-Token", authtoken.Authtoken())
-	resp, _ := client.Do(req)
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := httphelper.HttpPost(uri, d)
+	if err != nil {
+		return
+	}
 	fmt.Println("test InstallApk: ", string(body))
 
 	WriteTo(w, body)

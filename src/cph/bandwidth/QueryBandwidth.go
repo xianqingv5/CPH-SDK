@@ -2,8 +2,9 @@ package bandwidth
 
 import (
 	"fmt"
-	"httphelper"
 	"net/http"
+
+	"httphelper"
 )
 
 func WriteTo(w http.ResponseWriter, data []byte) {

@@ -1,13 +1,11 @@
 package adb
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
-	"authtoken"
+	"httphelper"
 )
 
 func UninstallApk(w http.ResponseWriter, r *http.Request) {
@@ -18,14 +16,11 @@ func UninstallApk(w http.ResponseWriter, r *http.Request) {
 	}
 
 	d, _ := json.Marshal(postbody)
-	data := bytes.NewReader(d)
 
-	client := &http.Client{}
-	req, _ := http.NewRequest("POST", uri, data)
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("X-Auth-Token", authtoken.Authtoken())
-	resp, _ := client.Do(req)
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := httphelper.HttpPost(uri, d)
+	if err != nil {
+		return
+	}
 	fmt.Println("test UninstallApk: ", string(body))
 
 	WriteTo(w, body)
