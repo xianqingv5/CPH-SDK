@@ -3,31 +3,42 @@ package phoneinstance
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"httphelper"
 	"global"
+	"httphelper"
+	"net/http"
+	"net/url"
+	"util"
 )
 
-func ListCloudPhoneModels (w http.ResponseWriter, r *http.Request) string {
+func ListCloudPhoneModels(w http.ResponseWriter, r *http.Request) {
 	var res Res
 	var projectId string // 必填，项目ID
-	var status string // 非必填，规格状态
+	var status string    // 非必填，规格状态
+	r.ParseForm()
 	if len(r.Form.Get("projectId")) > 0 {
 		projectId = r.Form.Get("projectId")
 	} else {
 		res.status = requestErr
 		re, _ := json.Marshal(res)
 		w.Write(re)
+		return
 	}
 
-	if len(r.Form.Get("status")) > 0 {
-		status = r.Form.Get("status")
-	}
-	uri := fmt.Sprintf("%s/%s/cloud-phone/phone-models/status=%s", global.BaseUrl, projectId, status)
-	body, _ := httphelper.HttpGet(uri)
-	res.data = string(body)
+	v := url.Values{}
+	status = r.Form.Get("status")
+	util.AddurlParam("status", status, &v)
+
+	uri := fmt.Sprintf("%s/%s/cloud-phone/phone-models", global.BaseUrl, projectId)
+	uri = uri + "?" + v.Encode()
+
+	body, err := httphelper.HttpGet(uri)
 	res.status = OK
+	if err != nil {
+		res.status = requestErr
+	} else {
+		res.data = string(body)
+	}
 	re, _ := json.Marshal(res)
 	w.Write(re)
-	return ""
+
 }

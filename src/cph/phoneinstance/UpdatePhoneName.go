@@ -3,31 +3,64 @@ package phoneinstance
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"httphelper"
 	"global"
+	"httphelper"
+	"net/http"
 )
 
-func UpdatePhoneName (w http.ResponseWriter, r *http.Request) string {
+type upnBody struct {
+	PhoneName string `json:"phone_name"`
+}
+
+func UpdatePhoneName(w http.ResponseWriter, r *http.Request) {
 	var res Res
 	var projectId string // 必填，项目ID
-	var phoneId string // 非必填，规格状态
+	var phoneId string   // 必填，规格状态
+	var upn upnBody
+	r.ParseForm()
 	if len(r.Form.Get("projectId")) > 0 {
 		projectId = r.Form.Get("projectId")
 	} else {
 		res.status = requestErr
 		re, _ := json.Marshal(res)
 		w.Write(re)
+
+		return
 	}
 
 	if len(r.Form.Get("phone_id")) > 0 {
 		phoneId = r.Form.Get("phone_id")
+	} else {
+		res.status = requestErr
+		re, _ := json.Marshal(res)
+		w.Write(re)
+		return
 	}
+
+	err := json.NewDecoder(r.Body).Decode(&upn)
+	if err != nil {
+		res.status = requestErr
+		re, _ := json.Marshal(res)
+		w.Write(re)
+		return
+	}
+
+	if len(upn.PhoneName) == 0 {
+		res.status = requestErr
+		re, _ := json.Marshal(res)
+		w.Write(re)
+		return
+	}
+
+	data, _ := json.Marshal(upn)
 	uri := fmt.Sprintf("%s/%s/cloud-phone/phone/phone_id=%s", global.BaseUrl, projectId, phoneId)
-	body, _ := httphelper.HttpGet(uri)
-	res.data = string(body)
+	body, err := httphelper.HttpPost(uri, data)
 	res.status = OK
+	if err != nil {
+		res.status = requestErr
+	} else {
+		res.data = string(body)
+	}
 	re, _ := json.Marshal(res)
 	w.Write(re)
-	return ""
 }
