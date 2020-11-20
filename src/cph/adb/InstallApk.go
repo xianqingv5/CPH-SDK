@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"httphelper"
+	"log"
 	"net/http"
+	"response"
 )
 
 type AdbPostBody struct {
@@ -12,10 +14,6 @@ type AdbPostBody struct {
 	Content   string   `json:"content"`
 	ServerIds []string `json:"server_ids,omitempty"`
 	PhoneIds  []string `json:"phone_ids,omitempty"`
-}
-
-func WriteTo(w http.ResponseWriter, data []byte) {
-	w.Write(data)
 }
 
 func GetPostBody(r *http.Request, format string) *AdbPostBody {
@@ -36,9 +34,12 @@ func GetPostBody(r *http.Request, format string) *AdbPostBody {
 }
 
 func InstallApk(w http.ResponseWriter, r *http.Request) {
+	resp := response.NewResp()
+
 	uri := "https://cph.cn-east-3.myhuaweicloud.com/v1/09402bad5e80f3902fc1c0188cab3cd5/cloud-phone/phones/commands"
 	postbody := GetPostBody(r, "install")
 	if postbody == nil {
+		resp.BadReq(w)
 		return
 	}
 
@@ -46,9 +47,12 @@ func InstallApk(w http.ResponseWriter, r *http.Request) {
 
 	body, err := httphelper.HttpPost(uri, d)
 	if err != nil {
+		log.Println("InstallApk err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
 	fmt.Println("test InstallApk: ", string(body))
 
-	WriteTo(w, body)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

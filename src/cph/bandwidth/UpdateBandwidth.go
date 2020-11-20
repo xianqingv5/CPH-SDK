@@ -2,11 +2,12 @@ package bandwidth
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
 	"httphelper"
+	"response"
 )
 
 type bws struct {
@@ -14,14 +15,18 @@ type bws struct {
 }
 
 func UpdateBandwidth(w http.ResponseWriter, r *http.Request) {
+	resp := response.NewResp()
+
 	r.ParseForm()
 	bwID := r.Form.Get("band_width_id")
 	if len(bwID) == 0 {
+		resp.BadReq(w)
 		return
 	}
 
 	bwSize := r.Form.Get("band_width_size")
 	if len(bwSize) == 0 {
+		resp.BadReq(w)
 		return
 	}
 	info, _ := strconv.Atoi(bwSize)
@@ -32,9 +37,11 @@ func UpdateBandwidth(w http.ResponseWriter, r *http.Request) {
 
 	body, err := httphelper.HttpPut(uri, mydata)
 	if err != nil {
+		log.Println("UpdateBandwidth err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
-	fmt.Println("test QueryBandwidth: ", string(body))
 
-	WriteTo(w, body)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

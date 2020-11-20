@@ -1,17 +1,16 @@
 package codingservice
 
 import (
+	"encoding/json"
 	"fmt"
-	"httphelper"
+	"log"
 	"net/http"
 	"net/url"
 
+	"httphelper"
+	"response"
 	"util"
 )
-
-func WriteTo(w http.ResponseWriter, data []byte) {
-	w.Write(data)
-}
 
 func ListEncodeService(w http.ResponseWriter, r *http.Request) {
 	f := func(offset, limit, types, status, server_id string) ([]byte, error) {
@@ -33,6 +32,8 @@ func ListEncodeService(w http.ResponseWriter, r *http.Request) {
 		return body, nil
 	}
 
+	resp := response.NewResp()
+
 	r.ParseForm()
 	offset := r.Form.Get("offset")
 	limit := r.Form.Get("limit")
@@ -40,10 +41,13 @@ func ListEncodeService(w http.ResponseWriter, r *http.Request) {
 	status := r.Form.Get("status")
 	serverID := r.Form.Get("server_id")
 
-	res, err := f(offset, limit, types, status, serverID)
+	body, err := f(offset, limit, types, status, serverID)
 	if err != nil {
+		log.Println("ListEncodeService err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
 
-	WriteTo(w, res)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }
