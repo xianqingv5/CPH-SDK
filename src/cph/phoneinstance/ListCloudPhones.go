@@ -3,25 +3,16 @@ package phoneinstance
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
+	"response"
 
 	"global"
 	"httphelper"
 	"util"
 )
 
-// 数据返回格式
-type Res struct {
-	status int
-	data   string
-}
-
-// 状态码
-const (
-	OK         = 200 // 成功
-	requestErr = 400 // 客户端错误
-)
 
 func ListCloudPhones(w http.ResponseWriter, r *http.Request) {
 	f := func(offset, limit, phone_name, server_id, status, typeInfo string, projectId string) ([]byte, error) {
@@ -40,15 +31,14 @@ func ListCloudPhones(w http.ResponseWriter, r *http.Request) {
 		return body, err
 	}
 
+	resp := response.NewResp()
+
 	var projectId string
-	var res Res
 	r.ParseForm()
 	if len(r.Form.Get("projectId")) > 0 {
 		projectId = r.Form.Get("projectId")
 	} else {
-		res.status = requestErr
-		re, _ := json.Marshal(res)
-		w.Write(re)
+		resp.BadReq(w)
 		return
 	}
 
@@ -59,15 +49,13 @@ func ListCloudPhones(w http.ResponseWriter, r *http.Request) {
 	status := r.Form.Get("status")
 	typeInfo := r.Form.Get("type")
 
-	data, err := f(offset, limit, phoneName, serverID, status, typeInfo, projectId)
-	res.status = OK
+	body, err := f(offset, limit, phoneName, serverID, status, typeInfo, projectId)
 	if err != nil {
-		res.status = requestErr
-	} else {
-		res.data = string(data)
+		log.Println("ListCloudPhones err: ", err)
+		resp.IntervalServErr(w)
+		return
 	}
 
-	myData, _ := json.Marshal(res)
-
-	w.Write(myData)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

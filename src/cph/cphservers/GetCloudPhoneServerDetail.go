@@ -1,16 +1,22 @@
 package cphservers
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 
 	"httphelper"
+	"response"
 )
 
 // todo test
-func GetCloudPhoneServerDetail(w http.ResponseWriter, r *http.Request)  {
+func GetCloudPhoneServerDetail(w http.ResponseWriter, r *http.Request) {
+	resp := response.NewResp()
+
 	r.ParseForm()
 	serverID := r.Form.Get("server_id")
 	if len(serverID) == 0 {
+		resp.BadReq(w)
 		return
 	}
 
@@ -18,8 +24,11 @@ func GetCloudPhoneServerDetail(w http.ResponseWriter, r *http.Request)  {
 
 	body, err := httphelper.HttpGet(uri)
 	if err != nil {
+		log.Println("GetCloudPhoneServerDetail err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
 
-	WriteTo(w, body)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

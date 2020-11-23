@@ -1,14 +1,20 @@
 package cphservers
 
 import (
+	"encoding/json"
 	"fmt"
-	"httphelper"
+	"log"
 	"net/http"
 	"net/url"
+
+	"httphelper"
+	"response"
 	"util"
 )
 
-func ListShareFiles(w http.ResponseWriter, r *http.Request)  {
+func ListShareFiles(w http.ResponseWriter, r *http.Request) {
+	resp := response.NewResp()
+
 	r.ParseForm()
 	path := r.Form.Get("path")
 	serverIDs := r.Form.Get("server_ids")
@@ -16,6 +22,7 @@ func ListShareFiles(w http.ResponseWriter, r *http.Request)  {
 	limit := r.Form.Get("limit")
 
 	if len(path) == 0 || len(serverIDs) == 0 {
+		resp.BadReq(w)
 		return
 	}
 
@@ -28,8 +35,11 @@ func ListShareFiles(w http.ResponseWriter, r *http.Request)  {
 
 	body, err := httphelper.HttpGet(uri)
 	if err != nil {
+		log.Println("ListShareFiles err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
 
-	WriteTo(w, body)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

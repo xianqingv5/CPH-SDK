@@ -1,11 +1,14 @@
 package cphservers
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 	"net/url"
-	"util"
 
 	"httphelper"
+	"response"
+	"util"
 )
 
 func ListCloudPhoneServers(w http.ResponseWriter, r *http.Request) {
@@ -23,6 +26,8 @@ func ListCloudPhoneServers(w http.ResponseWriter, r *http.Request) {
 		return body, err
 	}
 
+	resp := response.NewResp()
+
 	r.ParseForm()
 	serverName := r.Form.Get("server_name")
 	serverID := r.Form.Get("server_id")
@@ -31,8 +36,11 @@ func ListCloudPhoneServers(w http.ResponseWriter, r *http.Request) {
 
 	body, err := f(offset, limit, serverName, serverID)
 	if err != nil {
+		log.Println("ListCloudPhoneServers err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
 
-	WriteTo(w, body)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

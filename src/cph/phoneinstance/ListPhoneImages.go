@@ -4,31 +4,33 @@ import (
 	"encoding/json"
 	"fmt"
 	"global"
-	"httphelper"
+	"log"
 	"net/http"
+
+	"httphelper"
+	"response"
 )
 
 func ListPhoneImages(w http.ResponseWriter, r *http.Request) {
-	var res Res
+	resp := response.NewResp()
+
 	var projectId string // 必填，项目ID
 	r.ParseForm()
 	if len(r.Form.Get("projectId")) > 0 {
 		projectId = r.Form.Get("projectId")
 	} else {
-		res.status = requestErr
-		re, _ := json.Marshal(res)
-		w.Write(re)
+		resp.BadReq(w)
 		return
 	}
 
 	uri := fmt.Sprintf("%s/%s/cloud-phone/phone-images", global.BaseUrl, projectId)
 	body, err := httphelper.HttpGet(uri)
-	res.status = OK
 	if err != nil {
-		res.status = requestErr
-	} else {
-		res.data = string(body)
+		log.Println("ListPhoneImages err: ", err)
+		resp.IntervalServErr(w)
+		return
 	}
-	re, _ := json.Marshal(res)
-	w.Write(re)
+
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

@@ -1,14 +1,19 @@
 package cphservers
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 	"net/url"
+	"response"
 
 	"httphelper"
 	"util"
 )
 
 func GetCloudPhoneServerModels(w http.ResponseWriter, r *http.Request) {
+	resp := response.NewResp()
+
 	v := url.Values{}
 	r.ParseForm()
 	typeInfo := r.Form.Get("product_type")
@@ -19,8 +24,11 @@ func GetCloudPhoneServerModels(w http.ResponseWriter, r *http.Request) {
 
 	body, err := httphelper.HttpGet(uri)
 	if err != nil {
+		log.Println("GetCloudPhoneServerModels err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
 
-	WriteTo(w, body)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

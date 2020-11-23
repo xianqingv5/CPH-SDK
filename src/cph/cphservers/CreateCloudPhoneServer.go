@@ -2,8 +2,11 @@ package cphservers
 
 import (
 	"encoding/json"
-	"httphelper"
+	"log"
 	"net/http"
+
+	"httphelper"
+	"response"
 )
 
 type CloudPhone struct {
@@ -42,17 +45,22 @@ func WriteTo(w http.ResponseWriter, data []byte) {
 
 // todo test
 func CreateCloudPhoneServer(w http.ResponseWriter, r *http.Request) {
+	resp := response.NewResp()
+
 	if r.Method != "POST" {
+		resp.BadReqMethod(w)
 		return
 	}
 
 	var cp CloudPhone
 	if err := json.NewDecoder(r.Body).Decode(&cp); err != nil {
+		resp.BadReq(w)
 		return
 	}
 
 	if len(cp.ServerName) == 0 || len(cp.ServerModelName) == 0 || len(cp.PhoneModelName) == 0 || len(cp.ImageID) == 0 ||
 		cp.Count == 0 || cp.BandWidth == nil || cp.ExtendParam == nil {
+		resp.BadReq(w)
 		return
 	}
 
@@ -61,8 +69,11 @@ func CreateCloudPhoneServer(w http.ResponseWriter, r *http.Request) {
 
 	body, err := httphelper.HttpPost(uri, data)
 	if err != nil {
+		log.Println("CreateCloudPhoneServer err: ", err)
+		resp.IntervalServErr(w)
 		return
 	}
 
-	WriteTo(w, body)
+	json.Unmarshal(body, &resp.Data)
+	resp.WriteTo(w)
 }

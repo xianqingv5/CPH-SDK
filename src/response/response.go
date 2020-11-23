@@ -36,3 +36,9 @@ func (r *Resp) IntervalServErr(w http.ResponseWriter) {
 	r.Info = global.StatusText(r.Status)
 	r.WriteTo(w)
 }
+
+func (r *Resp) BadReqMethod(w http.ResponseWriter)  {
+	r.Status = global.StatusMethodNotAllowed
+	r.Info = global.StatusText(r.Status)
+	r.WriteTo(w)
+}
