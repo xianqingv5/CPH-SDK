@@ -14,6 +14,7 @@ type pocpBody struct {
 	PhoneIDs []string `json:"phone_ids"`
 }
 
+// 关闭云手机
 func PowerOffCloudPhone(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

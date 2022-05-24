@@ -10,6 +10,7 @@ import (
 	"response"
 )
 
+// 查询带宽信息
 func QueryBandwidth(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

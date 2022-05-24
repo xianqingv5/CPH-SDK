@@ -43,6 +43,7 @@ func WriteTo(w http.ResponseWriter, data []byte) {
 	w.Write(data)
 }
 
+// 购买系统定义网络云手机服务器
 // todo test
 func CreateCloudPhoneServer(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()

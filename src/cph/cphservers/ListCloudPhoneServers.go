@@ -11,6 +11,7 @@ import (
 	"util"
 )
 
+//  查询云手机服务器列表
 func ListCloudPhoneServers(w http.ResponseWriter, r *http.Request) {
 	f := func(offset, limit, server_name, server_id string) ([]byte, error) {
 		v := url.Values{}

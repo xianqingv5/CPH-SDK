@@ -12,6 +12,7 @@ import (
 	"util"
 )
 
+// 查询共享存储文件
 func ListShareFiles(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

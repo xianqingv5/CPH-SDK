@@ -11,6 +11,7 @@ import (
 	"response"
 )
 
+// 查询云手机详情
 func GetCloudPhoneDetail(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

@@ -12,6 +12,7 @@ import (
 	"util"
 )
 
+// 查询编码服务
 func ListEncodeService(w http.ResponseWriter, r *http.Request) {
 	f := func(offset, limit, types, status, server_id string) ([]byte, error) {
 		v := url.Values{}

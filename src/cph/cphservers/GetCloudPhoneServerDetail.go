@@ -9,6 +9,7 @@ import (
 	"response"
 )
 
+// 查询云手机服务器详情
 // todo test
 func GetCloudPhoneServerDetail(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()

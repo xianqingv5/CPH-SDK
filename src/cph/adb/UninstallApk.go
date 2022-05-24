@@ -10,6 +10,7 @@ import (
 	"response"
 )
 
+// 卸载apk
 func UninstallApk(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

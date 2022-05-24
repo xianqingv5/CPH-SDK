@@ -13,6 +13,7 @@ type rcpsBody struct {
 	ServerIDs []string `json:"server_ids"`
 }
 
+// 重启云手机
 func RestartCloudPhoneServer(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

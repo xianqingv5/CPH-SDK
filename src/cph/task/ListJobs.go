@@ -12,6 +12,7 @@ import (
 	"net/http"
 )
 
+// 查询任务执行状态列表
 func ListJobs(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

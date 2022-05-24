@@ -15,6 +15,7 @@ type upnBody struct {
 	PhoneName string `json:"phone_name"`
 }
 
+// 修改云手机名称
 func UpdatePhoneName(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

@@ -10,6 +10,7 @@ import (
 	"response"
 )
 
+// 执行同步adb shell命令
 func RunSyncCommand(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

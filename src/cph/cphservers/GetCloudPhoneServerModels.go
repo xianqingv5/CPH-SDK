@@ -11,6 +11,7 @@ import (
 	"util"
 )
 
+// 查询云手机服务器规格列表
 func GetCloudPhoneServerModels(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

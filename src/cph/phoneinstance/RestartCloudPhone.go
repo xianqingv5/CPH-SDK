@@ -19,6 +19,7 @@ type racpBody struct {
 	ImageID string `json:"image_id"`
 }
 
+// 重启云手机
 func RestartCloudPhone(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

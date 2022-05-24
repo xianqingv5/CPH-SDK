@@ -11,6 +11,7 @@ import (
 	"response"
 )
 
+// 查询任务执行状态
 func QueryJobs(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

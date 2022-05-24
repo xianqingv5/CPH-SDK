@@ -14,6 +14,7 @@ type postBody struct {
 	ServerIds []string `json:"server_ids"`
 }
 
+// 删除共享存储文件
 // todo test
 func DeleteShareFiles(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()

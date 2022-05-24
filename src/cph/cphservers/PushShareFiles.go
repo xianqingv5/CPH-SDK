@@ -15,6 +15,7 @@ type psfBody struct {
 	ServerIDs  []string `json:"server_ids"`
 }
 
+// 推送共享存储文件
 // todo test
 func PushShareFiles(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()

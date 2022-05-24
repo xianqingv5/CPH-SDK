@@ -18,6 +18,7 @@ type rcpBody struct {
 	} `json:"phones"`
 }
 
+// 重置云手机
 func ResetCloudPhone(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

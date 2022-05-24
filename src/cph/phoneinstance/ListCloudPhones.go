@@ -13,7 +13,7 @@ import (
 	"util"
 )
 
-
+// 查询云手机列表
 func ListCloudPhones(w http.ResponseWriter, r *http.Request) {
 	f := func(offset, limit, phone_name, server_id, status, typeInfo string, projectId string) ([]byte, error) {
 		v := url.Values{}

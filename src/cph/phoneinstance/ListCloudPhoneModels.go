@@ -13,6 +13,7 @@ import (
 	"util"
 )
 
+// 查询云手机规格列表
 func ListCloudPhoneModels(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

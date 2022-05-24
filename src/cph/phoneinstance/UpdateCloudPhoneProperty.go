@@ -17,6 +17,7 @@ type ucpBody struct {
 	} `json:"phones"`
 }
 
+// 更新云手机属性
 func UpdateCloudPhoneProperty(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

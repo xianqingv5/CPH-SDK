@@ -11,6 +11,7 @@ import (
 	"response"
 )
 
+// 查询手机镜像
 func ListPhoneImages(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 

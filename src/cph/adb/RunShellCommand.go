@@ -10,6 +10,7 @@ import (
 	"response"
 )
 
+// 执行异步adb shell命令
 func RunShellCommand(w http.ResponseWriter, r *http.Request) {
 	resp := response.NewResp()
 
