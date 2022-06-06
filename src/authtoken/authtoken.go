@@ -8,7 +8,7 @@ import (
 
 // Authtoken 获取token
 func Authtoken() string {
-	url := "https://iam.ru-northwest-2.myhuaweicloud.com/v3/auth/tokens?nocatalog=true"
+	url := "https://iam.cn-east-3.myhuaweicloud.com/v3/auth/tokens?nocatalog=true"
 
 	// json序列化
 	post := `{
@@ -20,16 +20,16 @@ func Authtoken() string {
 				"password": {
 					"user": {
 						"domain": {
-							"name": "diangao-2"
+							"name": "hw80449877"
 						},
-						"name": "lancelot.tian",
-						"password": "Yeahmobissp1!"
+						"name": "jackie_hu",
+						"password": "hu2130102"
 					}
 				}
 			},
 			"scope": {
 				"project": {
-					"name": "ru-northwest-2"
+					"name": "cn-east-3"
 				}
 			}
 		}
