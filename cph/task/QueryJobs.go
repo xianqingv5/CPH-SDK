@@ -13,7 +13,6 @@ import (
 // 查询任务执行状态
 func QueryJobs(w http.ResponseWriter, r *http.Request) {
 	resp := response2.NewResp()
-
 	// var projectId string // 必填，项目ID
 
 	// if len(r.Form.Get("projectId")) > 0 {
@@ -23,7 +22,7 @@ func QueryJobs(w http.ResponseWriter, r *http.Request) {
 	// 	return
 	// }
 	var jobId string // 必填，任务下发请求时响应的job_id
-	if len(r.Form.Get("jobId")) > 0 {
+	if len(r.URL.Query().Get("jobId")) > 0 {
 		jobId = r.Form.Get("jobId")
 	} else {
 		resp.BadReq(w)

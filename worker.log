@@ -1,7 +1,0 @@
-[env] 开发环境 -- dev
-[config] {{cph.ru-northwest-2.myhuaweicloud.com 0fa76c3cc35341559eea89ca551cae88 RO3ILGR2YPPUNN90QMGG egN1DeI5LkYzEppt9ern6zZcMsDkrEaW8aj1xlNO}}
-[test1]
-[test2]
-[test3]
-[test]
-[uri] https://cph.ru-northwest-2.myhuaweicloud.com/v1/0fa76c3cc35341559eea89ca551cae88/cloud-phone/phones?
