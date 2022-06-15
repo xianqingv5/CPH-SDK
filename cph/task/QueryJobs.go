@@ -23,13 +23,14 @@ func QueryJobs(w http.ResponseWriter, r *http.Request) {
 	// }
 	var jobId string // 必填，任务下发请求时响应的job_id
 	if len(r.URL.Query().Get("jobId")) > 0 {
-		jobId = r.Form.Get("jobId")
+		jobId = r.URL.Query().Get("jobId")
 	} else {
 		resp.BadReq(w)
 		return
 	}
+
 	uri := fmt.Sprintf("https://%s/v1/%s/cloud-phone/jobs/%s", conf.Config.Huawei.Endpoint, conf.Config.Huawei.ProjectId, jobId)
-	// uri := fmt.Sprintf("%s/%s/cloud-phone/jobs/%s", global.BaseUrl, projectId, jobId)
+	// uri := "https://cph.ru-northwest-2.myhuaweicloud.com/v1/0fa76c3cc35341559eea89ca551cae88/cloud-phone/jobs/c0a518442a0141d18164e463aaba41d3"
 	body, err := httphelper2.HttpGet(uri)
 	if err != nil {
 		log.Println("QueryJobs err: ", err)

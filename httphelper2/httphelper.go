@@ -33,7 +33,6 @@ func HttpGet(uri string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return body, nil
 }
 
