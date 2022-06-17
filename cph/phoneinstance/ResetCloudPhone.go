@@ -11,7 +11,8 @@ import (
 )
 
 type rcpBody struct {
-	Phones []struct {
+	ImageId string `json:"image_id"`
+	Phones  []struct {
 		PhoneID  string `json:"phone_id"`
 		Property string `json:"property"`
 	} `json:"phones"`
@@ -20,9 +21,7 @@ type rcpBody struct {
 // 重置云手机
 func ResetCloudPhone(w http.ResponseWriter, r *http.Request) {
 	resp := response2.NewResp()
-
 	// var projectId string // 必填，项目ID
-
 	// r.ParseForm()
 	// if len(r.Form.Get("projectId")) > 0 {
 	// 	projectId = r.Form.Get("projectId")

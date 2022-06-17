@@ -80,9 +80,9 @@ func main() {
 	// 关闭云手机
 	http.HandleFunc("/PowerOffCloudPhone", phoneinstance.PowerOffCloudPhone)
 	// 重置云手机
-	http.HandleFunc("/ResetCloudPhone", phoneinstance.RestartCloudPhone)
+	http.HandleFunc("/ResetCloudPhone", phoneinstance.ResetCloudPhone)
 	// 重启云手机
-	http.HandleFunc("/RestartCloudPhone", phoneinstance.ResetCloudPhone)
+	http.HandleFunc("/RestartCloudPhone", phoneinstance.RestartCloudPhone)
 	// 更新云手机属性
 	http.HandleFunc("/UpdateCloudPhoneProperty", phoneinstance.UpdateCloudPhoneProperty)
 	// 修改云手机名称
